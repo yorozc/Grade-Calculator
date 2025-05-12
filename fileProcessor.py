@@ -1,10 +1,14 @@
 class fileprocessor:
 
     def __init__(self, file):
-        self.fileName = file
+        self.file = file
 
     def processFile(self):
-        print(self.fileName)
+        with open(self.file) as file:
+            print(file.read())
 
     def createsResult(self):
+        pass
+
+    def operations(self):
         pass
