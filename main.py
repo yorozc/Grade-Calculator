@@ -6,7 +6,7 @@ class Main:
         gradeFile = input("Please insert grade file: ")
         gradeResult = fileprocessor(gradeFile) #passes string
         #gradeResult.processFile()
-        gradeResult.operations()
+        gradeResult.processAndResults()
 
     if __name__ == "__main__":
         main()

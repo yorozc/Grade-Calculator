@@ -4,8 +4,11 @@ class fileprocessor:
         self.file = file
 
     def processFile(self): #parses file
-        with open(self.file) as file:
-            print(file.read())
+        try:
+            with open(self.file) as file:
+                print(file.read())
+        except FileNotFoundError:
+            print("FILE NOT FOUND")
 
     def createsResult(self): #creates result.txt
         pass
