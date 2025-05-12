@@ -2,7 +2,7 @@ class fileprocessor:
 
     def __init__(self, file):
         self.file = file
-        self.weights = { #grade weights
+        self.weights = { #category, weights
             "HW": 0.25,
             "QUIZ": 0.25,
             "EXAM": 0.35,
@@ -31,18 +31,22 @@ class fileprocessor:
         result = 0
         for i in range(len(weightedGrades)):
             result += weightedGrades[i]
-        return result
+        
+        with open("result.txt", "w") as file:
+            finalScore = "Final Score: " + str(result)
+            file.write(finalScore)
+            print("result.txt has been created or overwritten!")
 
     def calculateWeights(self, category, grades):
         #calculate total grade and return it
-        totalCategoryWeight = 0 
+        totalGrades = 0 
         average = 0
         weightedGrade = 0
-        for i in range(len(grades)): 
-            totalCategoryWeight += int(grades[i])
+        for i in range(len(grades)): #total grades 
+            totalGrades += int(grades[i])
         
         if (len(grades) != 0):
-            average = totalCategoryWeight / len(grades) 
+            average = totalGrades / len(grades) 
             weightedGrade = average * self.weights[category]
 
         return weightedGrade
@@ -52,4 +56,4 @@ class fileprocessor:
 
     def processAndResults(self):
         self.processFile()
-        print(self.createsResult())
+        self.createsResult()
