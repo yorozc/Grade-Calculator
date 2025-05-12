@@ -2,7 +2,7 @@ class fileprocessor:
 
     def __init__(self, file):
         self.file = file
-        self.weights = {
+        self.weights = { #grade weights
             "HW": 0.25,
             "QUIZ": 0.25,
             "EXAM": 0.35,
@@ -11,27 +11,45 @@ class fileprocessor:
 
     def processFile(self): #parses file
         try:
+            weightedGrades = []
             with open(self.file, 'r') as file:
                 for line in file:
                     #print(line, end="")
                     gradeList = line.split() #makes string an array
-                    category = gradeList[0].upper()
-                    grades = gradeList[1:]
-                    print(grades)
-                    if category in self.weights:
-                        print(self.weights[category])
-                #separate first characters up until first white space
-            
+                    category = gradeList[0].upper() #dict key
+                    grades = gradeList[1:] #list of grades
+                    weight = self.calculateWeights(category, grades)
+                    weightedGrades.append(weight)
 
+            return weightedGrades
+            
         except FileNotFoundError:
             print("FILE NOT FOUND")
 
     def createsResult(self): #creates result.txt
-        pass
+        weightedGrades = self.processFile() #list of weights
+        result = 0
+        for i in range(len(weightedGrades)):
+            result += weightedGrades[i]
+        return result
 
-    def calculateWeights(self):
+    def calculateWeights(self, category, grades):
+        #calculate total grade and return it
+        totalCategoryWeight = 0 
+        average = 0
+        weightedGrade = 0
+        for i in range(len(grades)): 
+            totalCategoryWeight += int(grades[i])
+        
+        if (len(grades) != 0):
+            average = totalCategoryWeight / len(grades) 
+            weightedGrade = average * self.weights[category]
+
+        return weightedGrade
+            
+    def weightRescale(self):
         pass
 
     def processAndResults(self):
         self.processFile()
-        self.createsResult()
+        print(self.createsResult())
