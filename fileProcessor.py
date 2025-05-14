@@ -8,6 +8,7 @@ class fileprocessor:
             "EXAM": 0.35,
             "PROJECT": 0.15
         }
+        self.weightTotal = 100
 
     def processFile(self): #parses file
         try:
@@ -18,9 +19,10 @@ class fileprocessor:
                     gradeList = line.split() #makes string an array
                     category = gradeList[0].upper() #dict key
                     grades = gradeList[1:] #list of grades
+                    self.weightRescale(category, grades)
                     weight = self.calculateWeights(category, grades)
                     weightedGrades.append(weight)
-
+                    self.printWeights()
             return weightedGrades
             
         except FileNotFoundError:
@@ -29,16 +31,15 @@ class fileprocessor:
     def createsResult(self): #creates result.txt
         weightedGrades = self.processFile() #list of weights
         result = 0
-        for i in range(len(weightedGrades)):
+        for i in range(len(weightedGrades)): #totals up weighted grades
             result += weightedGrades[i]
         
         with open("result.txt", "w") as file:
-            finalScore = "Final Score: " + str(result)
+            finalScore = "Final Score: " + str(round(result,2))
             file.write(finalScore)
             print("result.txt has been created or overwritten!")
 
-    def calculateWeights(self, category, grades):
-        #calculate total grade and return it
+    def calculateWeights(self, category, grades): #calculate individual weighted grade
         totalGrades = 0 
         average = 0
         weightedGrade = 0
@@ -50,10 +51,11 @@ class fileprocessor:
             weightedGrade = average * self.weights[category]
 
         return weightedGrade
-            
-    def weightRescale(self):
-        pass
 
-    def processAndResults(self):
-        self.processFile()
-        self.createsResult()
+    def weightRescale(self, category, grades):
+        if len(grades) == 0:
+            if category in self.weights:
+                self.weights[category] = 0.0
+
+    def printWeights(self):
+        print(self.weights)
