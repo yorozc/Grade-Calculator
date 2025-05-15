@@ -8,54 +8,58 @@ class fileprocessor:
             "EXAM": 0.35,
             "PROJECT": 0.15
         }
-        self.weightTotal = 100
+        self.grades = {}
 
     def processFile(self): #parses file
         try:
-            weightedGrades = []
             with open(self.file, 'r') as file:
-                for line in file:
-                    #print(line, end="")
-                    gradeList = line.split() #makes string an array
-                    category = gradeList[0].upper() #dict key
-                    grades = gradeList[1:] #list of grades
-                    self.weightRescale(category, grades)
-                    weight = self.calculateWeights(category, grades)
-                    weightedGrades.append(weight)
-                    self.printWeights()
-            return weightedGrades
+                for line in file: 
+                    gradeList = line.split() 
+                    category = gradeList[0].upper() 
+                    grades = gradeList[1:] 
+                    self.grades[category] = grades #adds to self.grades
+
+                    #weight = self.calculateGrade(category, grades)
+                    #weightedGrades.append(weight)
+
+            self.printWeights()
+            print(self.grades)
             
         except FileNotFoundError:
             print("FILE NOT FOUND")
 
     def createsResult(self): #creates result.txt
-        weightedGrades = self.processFile() #list of weights
-        result = 0
-        for i in range(len(weightedGrades)): #totals up weighted grades
-            result += weightedGrades[i]
+        weightedGrades = self.calculateGrade() #list of weighted grades
+        result = sum([grade for grade in weightedGrades])
         
         with open("result.txt", "w") as file:
             finalScore = "Final Score: " + str(round(result,2))
             file.write(finalScore)
             print("result.txt has been created or overwritten!")
 
-    def calculateWeights(self, category, grades): #calculate individual weighted grade
+    def calculateGrade(self): #calculate individual weighted grade
         totalGrades = 0 
         average = 0
         weightedGrade = 0
+        
+
+        
         for i in range(len(grades)): #total grades 
             totalGrades += int(grades[i])
         
         if (len(grades) != 0):
-            average = totalGrades / len(grades) 
+            average = totalGrades / len(grades) # average of all grades for that category
             weightedGrade = average * self.weights[category]
 
         return weightedGrade
 
-    def weightRescale(self, category, grades):
-        if len(grades) == 0:
-            if category in self.weights:
-                self.weights[category] = 0.0
+    def weightRescale(self):
+        pass
+    # figure out way to rescale weights right at the beginning
 
     def printWeights(self):
         print(self.weights)
+
+    def wrapper(self):
+        self.weightRescale()
+        self.createsResult()

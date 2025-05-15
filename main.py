@@ -4,7 +4,7 @@ class Main:
     def main():
         gradeFile = input("Please insert grade file: ")
         gradeResult = fileprocessor(gradeFile) #passes string of text file
-        gradeResult.createsResult()
+        gradeResult.wrapper()
 
 if __name__ == "__main__":
     Main.main()
