@@ -26,6 +26,7 @@ class fileprocessor:
 
     def createsResult(self): #creates result.txt
         weightedGrades = self.calculateGrade() #list of weighted grades
+        print(weightedGrades)
         result = sum([grade for grade in weightedGrades])
         
         with open("result.txt", "w") as file:
@@ -34,19 +35,20 @@ class fileprocessor:
             print("result.txt has been created or overwritten!")
 
     def calculateGrade(self): #calculate individual weighted grade
-        gradesDict = self.processFile() #might be removed
-        totalGrades = 0 
-        average = 0
-        weightedGrade = 0
+        gradesDict = self.processFile()
+        weightedGrades = []
         
-        for i in range(len(grades)): #total grades 
-            totalGrades += int(grades[i])
-        
-        if (len(grades) != 0):
-            average = totalGrades / len(grades) # average of all grades for that category
-            weightedGrade = average * self.weights[category]
+        for key, val in gradesDict.items():
+            totalGrades = 0
+            for i in range(len(val)): #total grades 
+                totalGrades += int(val[i])
+            
+            if (len(val) != 0):
+                average = totalGrades / len(val) # average of all grades for that category
+                weightedGrade = average * (self.weights[key]/100)
+                weightedGrades.append(round(weightedGrade, 2))
 
-        return weightedGrade
+        return weightedGrades
 
     def weightRescale(self):
         gradesDict = self.processFile()
@@ -56,13 +58,13 @@ class fileprocessor:
                 newSum = 100 - self.weights[key]
                 self.weights[key] = 0.0
 
-        for key, val in self.weights.items(): #changes weights in constructor
-            self.weights[key] =  round((val / newSum) * 100, 2)
+                for key, val in self.weights.items(): #changes weights in constructor
+                    self.weights[key] =  round((val / newSum) * 100, 2)
 
     def printWeights(self):
         print(self.weights)
 
-    def wrapper(self):
+    def rescaleAndCreate(self):
         self.printWeights()
         self.weightRescale()
         self.printWeights()
