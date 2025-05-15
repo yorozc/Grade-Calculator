@@ -27,15 +27,15 @@ class fileprocessor:
     def createsResult(self): #creates result.txt
         weightedGrades = self.calculateGrade() #list of weighted grades
         print(weightedGrades)
-        result = sum([grade for grade in weightedGrades])
+        result = int(sum([grade for grade in weightedGrades]))
         
         with open("result.txt", "w") as file:
-            finalScore = "Final Score: " + str(round(result,2))
+            finalScore = "Final Score: " + str(round(result, 2))
             file.write(finalScore)
             print("result.txt has been created or overwritten!")
 
     def calculateGrade(self): #calculate individual weighted grade
-        gradesDict = self.processFile()
+        gradesDict = self.weightRescale()
         weightedGrades = []
         
         for key, val in gradesDict.items():
@@ -46,7 +46,7 @@ class fileprocessor:
             if (len(val) != 0):
                 average = totalGrades / len(val) # average of all grades for that category
                 weightedGrade = average * (self.weights[key]/100)
-                weightedGrades.append(round(weightedGrade, 2))
+                weightedGrades.append(weightedGrade)
 
         return weightedGrades
 
@@ -59,7 +59,9 @@ class fileprocessor:
                 self.weights[key] = 0.0
 
                 for key, val in self.weights.items(): #changes weights in constructor
-                    self.weights[key] =  round((val / newSum) * 100, 2)
+                    self.weights[key] =  (val / newSum) * 100
+        
+        return gradesDict
 
     def printWeights(self):
         print(self.weights)
