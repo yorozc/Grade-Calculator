@@ -10,3 +10,15 @@ class MainWindow(QMainWindow):
         self.setGeometry(600, 150, 750, 750)
         self.setWindowTitle("CS3750 Grade Calculator")
         self.setWindowIcon(QIcon("pictures/cartoon-notebook-icon-png.png"))
+        self.setStyleSheet("background-color: white;")
+        self.inputFileButton = QPushButton("Select File", self)
+        self.initUI()
+
+    def initUI(self):
+        #buttons
+        self.inputFileButton.setGeometry(0, 0, 150, 50)
+        self.inputFileButton.setStyleSheet("background-color: #55a7fa;" \
+                                        "color: black;" \
+                                        "font-size: 24px;" \
+                                        "font-weight: bold;" \
+                                        "border-radius: 8px;")
