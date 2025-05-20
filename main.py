@@ -9,9 +9,9 @@ class Main:
     def main():
         app = QApplication([])
         window = MainWindow()
-        #gradeFile = input("Please insert grade file: ")
-        #gradeResult = fileprocessor(gradeFile) #passes string of text file
-        #gradeResult.rescaleAndCreate()
+        gradeFile = window.inputFileButton()
+        gradeResult = fileprocessor(gradeFile) #passes string of text file
+        gradeResult.rescaleAndCreate()
         window.show()
         app.exec()
 
