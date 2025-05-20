@@ -1,3 +1,4 @@
+from fileProcessor import fileprocessor
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import (QMainWindow, QVBoxLayout, QPushButton, QLabel, QWidget,
                                QFileDialog)
@@ -35,4 +36,11 @@ class MainWindow(QMainWindow):
             "",
             "Text Files (*.txt)"
         )
+        if filePath:
+            try:
+                gradeResult = fileprocessor(filePath) #passes string of text file
+                gradeResult.rescaleAndCreate()
+            except:
+                pass
+            
         return filePath

@@ -9,13 +9,8 @@ class Main:
     def main():
         app = QApplication([])
         window = MainWindow()
-        gradeFile = window.inputFileButton()
-        gradeResult = fileprocessor(gradeFile) #passes string of text file
-        gradeResult.rescaleAndCreate()
         window.show()
         app.exec()
-
-
 
 if __name__ == "__main__":
     Main.main()
