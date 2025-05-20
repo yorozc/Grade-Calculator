@@ -1,6 +1,6 @@
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import (QMainWindow, QVBoxLayout, QPushButton, QLabel, QWidget,
-                               )
+                               QFileDialog)
 
 from PySide6.QtGui import QIcon, QFont, QPixmap
 
@@ -22,3 +22,17 @@ class MainWindow(QMainWindow):
                                         "font-size: 24px;" \
                                         "font-weight: bold;" \
                                         "border-radius: 8px;")
+        self.inputFileButton.clicked.connect(self.inputFileButtonPressed)
+        
+    def inputFileButtonPressed(self):
+        selectedfile = self.selectGradeFile()
+        print("selected file: " + selectedfile)
+        
+    def selectGradeFile(self):
+        filePath, _ = QFileDialog.getOpenFileName(
+            None,
+            "Select Grade File",
+            "",
+            "Text Files (*.txt)"
+        )
+        return filePath
