@@ -35,58 +35,72 @@ class MainWindow(QMainWindow):
         self.inputFileButton.clicked.connect(self.inputFileButtonPressed)
 
         #layout
-        centralWidget = QWidget()
-        self.setCentralWidget(centralWidget)
+        self.centralWidget = QWidget()
+        self.setCentralWidget(self.centralWidget)
         mainLayout = QVBoxLayout()
 
-        categoryLayout = QVBoxLayout()
+        self.categoryLayout = QVBoxLayout()
         resultLayout = QHBoxLayout()
 
         #Labels (Grades and results)
-        self.hwGrade = QLabel("HW: ", self)
-
-        self.hwGrade.setStyleSheet("color: black;" \
-                            "border: 1px solid red;")
-        self.quizGrade = QLabel("Quiz: ", self)
-        self.quizGrade.setStyleSheet("color: black;" \
-                            "border: 1px solid red;")
-        self.examGrade = QLabel("Exam: ", self)
-        self.examGrade.setStyleSheet("color: black;" \
-                            "border: 1px solid red;")
-        self.projectGrade = QLabel("Project: ", self)
-        self.projectGrade.setStyleSheet("color: black;" \
+        hwGrade = QLabel("HW", self)
+        hwGrade.setObjectName("HW")
+        hwGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
         
-        self.result = QLabel("Result", self)
-        self.result.setStyleSheet("color: black;" \
+        quizGrade = QLabel("Quiz", self)
+        quizGrade.setObjectName("QUIZ")
+        quizGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        self.result.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        
+        examGrade = QLabel("Exam", self)
+        examGrade.setObjectName("EXAM")
+        examGrade.setStyleSheet("color: black;" \
+                            "border: 1px solid red;")
+        
+        projectGrade = QLabel("Project", self)
+        projectGrade.setObjectName("PROJECT")
+        projectGrade.setStyleSheet("color: black;" \
+                            "border: 1px solid red;")
+        
+        result = QLabel("Result", self)
+        result.setStyleSheet("color: black;" \
+                            "border: 1px solid red;")
+        result.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
         # adding widgets to layouts
         mainLayout.addWidget(self.inputFileButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
-        categoryLayout.addWidget(self.hwGrade)
-        categoryLayout.addWidget(self.quizGrade)
-        categoryLayout.addWidget(self.examGrade)
-        categoryLayout.addWidget(self.projectGrade)
+        self.categoryLayout.addWidget(hwGrade)
+        self.categoryLayout.addWidget(quizGrade)
+        self.categoryLayout.addWidget(examGrade)
+        self.categoryLayout.addWidget(projectGrade)
 
-        resultLayout.addWidget(self.result)
+        resultLayout.addWidget(result)
 
-        mainLayout.addLayout(categoryLayout)
+        mainLayout.addLayout(self.categoryLayout)
         mainLayout.addLayout(resultLayout)
 
-        centralWidget.setLayout(mainLayout)
+        self.centralWidget.setLayout(mainLayout)
         
     def inputFileButtonPressed(self):
         selectedfile = self.selectGradeFile()
         print("selected file: " + selectedfile)
     
-    def setGrades(self, grades):
-        self.grades = grades
+    def displayGrades(self, grades):
+        i = 0
+        for k,v in grades.items():
+            print(v)
+            item = self.categoryLayout.itemAt(i)
+            if item.widget():
+                widget = item.widget()
+                if widget.objectName() == k and len(v) !=0:
+                    widget.setText(f"{k}: {" ".join(v)}")
+                else:
+                    widget.setText(f"{k}: Empty Category")
+            i+=1
+                    
 
-    def printGrades(self):
-        for k,v in self.grades.items():
-            print(k, v)
         
     def selectGradeFile(self):
         filePath, _ = QFileDialog.getOpenFileName(
@@ -100,10 +114,9 @@ class MainWindow(QMainWindow):
                 gradeResult = fileprocessor(filePath) #passes string of text file
                 gradeResult.rescaleAndCreate()
                 grades = gradeResult.getGrades()
-                self.setGrades(grades)
-                self.printGrades()
+                self.displayGrades(grades)
 
-            except:
-                print("Invalid file. Text files only.")
+            except Exception as e:
+                print(f"An error has occured: {e}")
 
         return filePath
