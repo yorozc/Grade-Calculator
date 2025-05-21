@@ -11,12 +11,18 @@ class MainWindow(QMainWindow):
         self.setGeometry(600, 150, 750, 750)
         self.setWindowTitle("CS3750 Grade Calculator")
         self.setWindowIcon(QIcon("pictures/cartoon-notebook-icon-png.png"))
-        self.setStyleSheet("background-color: white;")
         self.inputFileButton = QPushButton("Select File", self)
         self.initUI()
 
     def initUI(self):
         #buttons
+        self.setStyleSheet("QLabel{" \
+                        "font-size: 32px;"
+                        "}"
+                        "QMainWindow{" \
+                        "background-color: white;" \
+                        "}") 
+        
         self.inputFileButton.setGeometry(0, 0, 150, 50)
         self.inputFileButton.setStyleSheet("background-color: #55a7fa;" \
                                         "color: black;" \
@@ -24,7 +30,7 @@ class MainWindow(QMainWindow):
                                         "font-weight: bold;" \
                                         "border-radius: 8px;"
                                         "padding: 12px;"
-                                        )
+                                        "margin-top: 75px")
 
         self.inputFileButton.clicked.connect(self.inputFileButtonPressed)
 
@@ -37,24 +43,27 @@ class MainWindow(QMainWindow):
         resultLayout = QHBoxLayout()
 
         #Labels (Grades and results)
-        hwGrade = QLabel("HW", self)
+        hwGrade = QLabel("HW: ", self)
         hwGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        quizGrade = QLabel("Quiz", self)
+        quizGrade = QLabel("Quiz: ", self)
         quizGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        examGrade = QLabel("Exam", self)
+        examGrade = QLabel("Exam: ", self)
         examGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        projectGrade = QLabel("Project", self)
+        projectGrade = QLabel("Project: ", self)
         projectGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
         
         result = QLabel("Result", self)
         result.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
+        result.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
+        # adding widgets to layouts
         mainLayout.addWidget(self.inputFileButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
+
         categoryLayout.addWidget(hwGrade)
         categoryLayout.addWidget(quizGrade)
         categoryLayout.addWidget(examGrade)
@@ -66,8 +75,6 @@ class MainWindow(QMainWindow):
         mainLayout.addLayout(resultLayout)
 
         centralWidget.setLayout(mainLayout)
-        
-
         
     def inputFileButtonPressed(self):
         selectedfile = self.selectGradeFile()
