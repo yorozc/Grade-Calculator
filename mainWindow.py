@@ -65,12 +65,12 @@ class MainWindow(QMainWindow):
         # adding widgets to layouts
         mainLayout.addWidget(self.inputFileButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
-        categoryLayout.addWidget(hwGrade)
-        categoryLayout.addWidget(quizGrade)
-        categoryLayout.addWidget(examGrade)
-        categoryLayout.addWidget(projectGrade)
+        categoryLayout.addWidget(self.hwGrade)
+        categoryLayout.addWidget(self.quizGrade)
+        categoryLayout.addWidget(self.examGrade)
+        categoryLayout.addWidget(self.projectGrade)
 
-        resultLayout.addWidget(result)
+        resultLayout.addWidget(self.result)
 
         mainLayout.addLayout(categoryLayout)
         mainLayout.addLayout(resultLayout)
