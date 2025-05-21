@@ -1,7 +1,5 @@
 from fileProcessor import fileprocessor
 from mainWindow import MainWindow
-import sys
-import os
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt

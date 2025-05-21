@@ -1,7 +1,6 @@
 from fileProcessor import fileprocessor
 from PySide6.QtWidgets import (QMainWindow, QVBoxLayout, QPushButton, QLabel, QWidget,
                                QFileDialog, QGridLayout, QHBoxLayout)
-
 from PySide6.QtGui import QIcon, QFont, QPixmap
 from PySide6.QtCore import Qt
 
@@ -12,6 +11,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("CS3750 Grade Calculator")
         self.setWindowIcon(QIcon("pictures/cartoon-notebook-icon-png.png"))
         self.inputFileButton = QPushButton("Select File", self)
+        self.grades = {}
         self.initUI()
 
     def initUI(self):
@@ -43,23 +43,24 @@ class MainWindow(QMainWindow):
         resultLayout = QHBoxLayout()
 
         #Labels (Grades and results)
-        hwGrade = QLabel("HW: ", self)
-        hwGrade.setStyleSheet("color: black;" \
+        self.hwGrade = QLabel("HW: ", self)
+
+        self.hwGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        quizGrade = QLabel("Quiz: ", self)
-        quizGrade.setStyleSheet("color: black;" \
+        self.quizGrade = QLabel("Quiz: ", self)
+        self.quizGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        examGrade = QLabel("Exam: ", self)
-        examGrade.setStyleSheet("color: black;" \
+        self.examGrade = QLabel("Exam: ", self)
+        self.examGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        projectGrade = QLabel("Project: ", self)
-        projectGrade.setStyleSheet("color: black;" \
+        self.projectGrade = QLabel("Project: ", self)
+        self.projectGrade.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
         
-        result = QLabel("Result", self)
-        result.setStyleSheet("color: black;" \
+        self.result = QLabel("Result", self)
+        self.result.setStyleSheet("color: black;" \
                             "border: 1px solid red;")
-        result.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.result.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
         # adding widgets to layouts
         mainLayout.addWidget(self.inputFileButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
@@ -79,10 +80,13 @@ class MainWindow(QMainWindow):
     def inputFileButtonPressed(self):
         selectedfile = self.selectGradeFile()
         print("selected file: " + selectedfile)
+    
+    def setGrades(self, grades):
+        self.grades = grades
 
-    def getGrades(self):
-        gradesDict = fileprocessor.getGrades()
-        return gradesDict
+    def printGrades(self):
+        for k,v in self.grades.items():
+            print(k, v)
         
     def selectGradeFile(self):
         filePath, _ = QFileDialog.getOpenFileName(
@@ -95,6 +99,10 @@ class MainWindow(QMainWindow):
             try:
                 gradeResult = fileprocessor(filePath) #passes string of text file
                 gradeResult.rescaleAndCreate()
+                grades = gradeResult.getGrades()
+                self.setGrades(grades)
+                self.printGrades()
+
             except:
                 print("Invalid file. Text files only.")
 
