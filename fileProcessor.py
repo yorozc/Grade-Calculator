@@ -23,6 +23,9 @@ class fileprocessor:
             
         except FileNotFoundError:
             print("FILE NOT FOUND")
+    
+    def getGrades(self):
+        return self.processFile()
 
     def createsResult(self): #creates result.txt
         weightedGrades = self.calculateGrade() #list of weighted grades
