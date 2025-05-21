@@ -36,6 +36,8 @@ class fileprocessor:
             finalScore = "Final Score: " + str(round(result, 2))
             file.write(finalScore)
             print("result.txt has been created or overwritten!")
+            
+        return result
 
     def calculateGrade(self): #calculate individual weighted grade
         gradesDict = self.weightRescale()
